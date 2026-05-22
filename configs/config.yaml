@@ -1,0 +1,72 @@
+# ============================================================
+# Central Configuration — YOLOv8 Urban Object Detection
+# ============================================================
+# All paths are relative to the project root.
+# GPU-optimized defaults for NVIDIA GTX 1650 (4GB VRAM).
+
+# --- Dataset ---
+dataset:
+  raw_dir: "dataset"                  # Raw COCO-format dataset
+  yolo_dir: "yolo_dataset"            # Converted YOLO-format output
+  splits: ["train", "valid", "test"]
+  annotation_file: "_annotations.coco.json"
+  image_extensions: [".jpg", ".jpeg", ".png", ".bmp", ".webp"]
+  use_symlinks: true                  # Try symlinks first; fallback to copy
+
+# --- Training (GTX 1650 4GB optimized) ---
+training:
+  model: "yolov8n.pt"                 # Nano for 4GB VRAM; swap to yolov8s.pt for better accuracy
+  epochs: 25
+  imgsz: 640
+  batch: -1                           # -1 = auto batch sizing (Ultralytics AutoBatch)
+  workers: 2                          # Low workers to reduce RAM pressure
+  cache: false                        # Don't cache images in RAM (saves ~3GB)
+  patience: 10                        # Early stopping patience
+  save_period: 5                      # Checkpoint every N epochs
+  optimizer: "auto"
+  lr0: 0.01
+  lrf: 0.01
+  momentum: 0.937
+  weight_decay: 0.0005
+  warmup_epochs: 3.0
+  warmup_momentum: 0.8
+  warmup_bias_lr: 0.1
+  close_mosaic: 10
+  amp: true                           # Mixed precision (auto-disabled if unsupported)
+  resume: false                       # Set true to resume interrupted training
+  seed: 42
+  oom_retry: true                     # Auto-retry with smaller batch on OOM
+  oom_batch_fraction: 0.5             # Halve batch on OOM
+
+# --- Evaluation ---
+evaluation:
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  underperform_ap_threshold: 0.3      # Flag classes with AP50 below this
+  max_prediction_images: 12           # Number of test images to visualize
+
+# --- Export ---
+export:
+  format: "onnx"
+  imgsz: 640
+  simplify: true
+  quantize: true                      # Also export quantized INT8 ONNX
+  opset: 17                           # ONNX opset version
+  copy_to_frontend: true
+  frontend_model_dir: "frontend/public/model"
+
+# --- Output ---
+output:
+  base_dir: "outputs"
+  models_dir: "outputs/models"
+  reports_dir: "outputs/reports"
+  history_dir: "outputs/training_history"
+
+# --- Frontend ---
+frontend:
+  dir: "frontend"
+  default_conf_threshold: 0.25
+  resolutions:
+    desktop: 640
+    laptop: 416
+    mobile: 320

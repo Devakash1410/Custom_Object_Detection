@@ -1,0 +1,23 @@
+# YOLOv8 Urban Object Detection — Dependencies
+# Install: pip install -r requirements.txt
+
+# Core ML
+ultralytics>=8.2.0
+torch>=2.0.0
+torchvision>=0.15.0
+
+# ONNX export & optimization
+onnx>=1.14.0
+onnxruntime>=1.16.0
+onnxsim>=0.4.0
+
+# Data & visualization
+opencv-python>=4.8.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# Config & utilities
+pyyaml>=6.0
+tqdm>=4.65.0
