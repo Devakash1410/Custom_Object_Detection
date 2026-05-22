@@ -9,6 +9,7 @@ venv/
 env/
 ENV/
 .ENV/
+yoloenv/
 
 # Dataset and large data files
 dataset/
